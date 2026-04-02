@@ -81,7 +81,7 @@ jobs:
 #          EOF
 
   deploy:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
