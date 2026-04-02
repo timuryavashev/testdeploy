@@ -15,7 +15,7 @@ services:
       - ./.env
     environment:
       - DATABASE_NAME=${NAME}
-      - DATABASE_USER=${USER}
+      - DATABASE_USER=${DB_USER}
       - DATABASE_PASSWORD=${PASSWORD}
       - DATABASE_HOST=db
       - DATABASE_PORT=${PORT}
@@ -39,7 +39,7 @@ services:
       - ./.env
     environment:
       - POSTGRES_DB=${NAME}
-      - POSTGRES_USER=${USER}
+      - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${PASSWORD}
     ports:
       - "5432:5432"
