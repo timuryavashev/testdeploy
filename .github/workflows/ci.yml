@@ -44,22 +44,41 @@ jobs:
       - name: Run tests
         run: python manage.py test
 
-  build:
-    needs: test
-    runs-on: ubuntu-latest
+#  build:
+#    needs: test
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v3
+#
+#      - name: Log in in Docker hub
+#        run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+#
+#      - name: Build Docker image
+#        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }} .
+#
+#      - name: Push Docker image
+#        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }}
 
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Log in in Docker hub
-        run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }} .
-
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }}
+#  deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Set up SSH
+#        uses: webfactory/ssh-agent@v0.10.0
+#        with:
+#          ssh-private-key: ${{ secrets.SSH_KEY }}
+#
+#      - name: Deploy to server
+#        run: |
+#          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+#          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }}
+#          docker stop testdeploy-web-1 || true
+#          docker rm testdeploy-web-1 || true
+#          docker run -d --name testdeploy-web-1 -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }}
+#          EOF
 
   deploy:
     needs: build
@@ -74,8 +93,8 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }}
-          docker stop testdeploy-web-1 || true
-          docker rm testdeploy-web-1 || true
-          docker run -d --name testdeploy-web-1 -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/testdeploy-web-1:${{ github.sha }}
+          cd ${{ secrets.DEPLOY_DIR }}
+          git pull
+          docker compose down
+          docker compose up -d --build          
           EOF
