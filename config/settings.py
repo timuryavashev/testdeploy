@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
+import sys
+
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -167,3 +169,11 @@ CSRF_TRUSTED_ORIGINS = [
     'http://150.241.94.236',
     'http://150.241.94.236:8000',
 ]
+
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'test_db.sqlite3'
+        }
+    }
