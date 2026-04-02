@@ -19,6 +19,7 @@ services:
       - DATABASE_PASSWORD=${PASSWORD}
       - DATABASE_HOST=db
       - DATABASE_PORT=${PORT}
+      - POSTGRES_USER=${USER}
 
   nginx:
     build:
