@@ -4,21 +4,30 @@ from library.models import Author, Book
 
 
 class Command(BaseCommand):
-    help = 'Add books to database'
+    help = "Add books to database"
 
     def handle(self, *args, **options):
-        author, _ = Author.objects.get_or_create(first_name='Антон', last_name='Чехов', birth_day='1860-01-29')
-
+        author, _ = Author.objects.get_or_create(
+            first_name="Антон", last_name="Чехов", birth_day="1860-01-29"
+        )
 
         books = [
-            {'title': 'Вишневый сад', 'publication_data': '1904-01-01', 'author': author},
-            {'title': 'Три сестры', 'publication_data': '1901-01-01', 'author': author}
+            {
+                "title": "Вишневый сад",
+                "publication_data": "1904-01-01",
+                "author": author,
+            },
+            {"title": "Три сестры", "publication_data": "1901-01-01", "author": author},
         ]
 
         for book_data in books:
             book, created = Book.objects.get_or_create(**book_data)
 
             if created:
-                self.stdout.write(self.style.SUCCESS(f'Successfully added book {book.title}'))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Successfully added book {book.title}")
+                )
             else:
-                self.stdout.write(self.style.WARNING(f'Book already exist {book.title}'))
+                self.stdout.write(
+                    self.style.WARNING(f"Book already exist {book.title}")
+                )

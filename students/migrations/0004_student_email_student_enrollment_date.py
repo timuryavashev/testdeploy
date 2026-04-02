@@ -7,19 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('students', '0003_mymodel_description'),
+        ("students", "0003_mymodel_description"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='student',
-            name='email',
+            model_name="student",
+            name="email",
             field=models.EmailField(default=django.utils.timezone.now, max_length=254),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='student',
-            name='enrollment_date',
+            model_name="student",
+            name="enrollment_date",
             field=models.DateField(default=django.utils.timezone.now),
             preserve_default=False,
         ),

@@ -6,12 +6,20 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('students', '0004_student_email_student_enrollment_date'),
+        ("students", "0004_student_email_student_enrollment_date"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='student',
-            options={'ordering': ['last_name'], 'permissions': [('can_promote_student', 'Can promote student'), ('can_expel_student', 'Can expel student')], 'verbose_name': 'студент', 'verbose_name_plural': 'студенты'},
+            name="student",
+            options={
+                "ordering": ["last_name"],
+                "permissions": [
+                    ("can_promote_student", "Can promote student"),
+                    ("can_expel_student", "Can expel student"),
+                ],
+                "verbose_name": "студент",
+                "verbose_name_plural": "студенты",
+            },
         ),
     ]
