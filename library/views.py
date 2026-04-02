@@ -7,7 +7,6 @@ from .models import Book, Author
 from .sevices import BookServices
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
-from django.core.cache import cache
 
 
 class ReviewBookView(LoginRequiredMixin, View):
@@ -48,14 +47,6 @@ class AuthorListView(ListView):
     model = Author
     template_name = 'library/authors_list.html'
     context_object_name = 'authors'
-
-    def get_queryset(self):
-        queryset = cache.get('authors_queryset')
-        if not queryset:
-            queryset = super().get_queryset()
-            cache.set('authors_queryset', queryset, 60 * 15)
-        return queryset
-
 
 
 class BooksListView(LoginRequiredMixin, ListView):
